@@ -2,6 +2,8 @@ package iscot.client;
 
 import iscot.client.gui.SensorControl;
 import iscot.enums.Areas;
+import iscot.events.LightSensorEvent;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +28,7 @@ public class LightSensor {
 
 			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
+			String senderId = "LightSensor-" + area; // provisório: na fase 4 passa a ser o ID dado pelo servidor
 			
 
 			JFrame janela = new JFrame("Luminosidade em "+area);
@@ -39,7 +42,8 @@ public class LightSensor {
 				    0, 100, 1, 50,
 				    valor -> {
 				    	// TODO handle change in sensor
-				    	System.out.println("Luminosidade mudou para: "+valor);
+						LightSensorEvent evento = new LightSensorEvent(senderId, area, valor);
+						System.out.println(evento);
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);
 			janela.setContentPane(painel);

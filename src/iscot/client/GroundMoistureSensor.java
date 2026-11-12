@@ -2,6 +2,7 @@ package iscot.client;
 
 import iscot.client.gui.SensorControl;
 import iscot.enums.Areas;
+import iscot.events.GroundMoistureSensorEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +27,8 @@ public class GroundMoistureSensor {
 
 			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
-			
+			String senderId = "GroundMoistureSensor-" + area; // provisório: na fase 4 passa a ser o ID dado pelo servidor
+
 
 			JFrame janela = new JFrame("Humidade do solo em "+area);
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -39,7 +41,8 @@ public class GroundMoistureSensor {
 				    0, 100, 1, 50,
 				    valor -> {
 				    	// TODO handle change in sensor
-				    	System.out.println("Mudou para:"+valor);
+						GroundMoistureSensorEvent evento = new GroundMoistureSensorEvent(senderId, area, valor);
+						System.out.println(evento);
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);
 			janela.setContentPane(painel);

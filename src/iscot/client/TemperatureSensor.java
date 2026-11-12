@@ -2,6 +2,7 @@ package iscot.client;
 
 import iscot.client.gui.SensorControl;
 import iscot.enums.Areas;
+import iscot.events.TemperatureSensorEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,7 @@ public class TemperatureSensor {
 
 			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
+			String senderId = "TemperatureSensor-" + area;
 			
 
 			JFrame janela = new JFrame("Temperatura em "+area);
@@ -38,8 +40,8 @@ public class TemperatureSensor {
 			SensorControl sensorControl= new SensorControl( "☀", "Temperatura - "+area, "ºC",
 				    0, 40, 0.5, 20,
 				    valor -> {
-				    	// TODO handle change in sensor
-				    	System.out.println("Temperatura mudou para: "+valor);
+						TemperatureSensorEvent evento = new TemperatureSensorEvent(senderId, area, valor);
+						System.out.println(evento);
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);
 			janela.setContentPane(painel);
