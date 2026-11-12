@@ -30,6 +30,6 @@ public abstract class SensorEvent extends Event {
 
     @Override
     public String toString() {
-        return super.toString() + " | valor=" + value + " " + getUnit();
+        return super.toString() + " | valor = " + value + " " + getUnit();
     }
 }
