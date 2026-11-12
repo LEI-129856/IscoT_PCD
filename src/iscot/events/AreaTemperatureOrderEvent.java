@@ -19,8 +19,13 @@ public class AreaTemperatureOrderEvent extends HighLevelOrderEvent {
         this.temperature = temperature;
     }
 
-    public AirConditioningMode getMode() { return mode; }
-    public double getTemperature() { return temperature; }
+    public AirConditioningMode getMode() {
+        return mode;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
 
     @Override
     public String toString() {

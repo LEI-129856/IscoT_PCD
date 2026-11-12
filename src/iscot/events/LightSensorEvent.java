@@ -11,5 +11,7 @@ public class LightSensorEvent extends SensorEvent {
     }
 
     @Override
-    public String getUnit() { return "%"; }
+    public String getUnit() {
+        return "%";
+    }
 }

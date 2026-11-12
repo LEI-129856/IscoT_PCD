@@ -13,7 +13,9 @@ public abstract class SensorEvent extends Event {
         this.value = value;
     }
 
-    public double getValue() { return value; }
+    public double getValue() {
+        return value;
+    }
 
     /** Cada tipo de sensor diz a sua unidade (%, °C, ...). */
     public abstract String getUnit();

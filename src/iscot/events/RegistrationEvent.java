@@ -17,7 +17,9 @@ public class RegistrationEvent extends Event {
         this.clientType = clientType;
     }
 
-    public Type getClientType() { return clientType; }
+    public Type getClientType() {
+        return clientType;
+    }
 
     @Override
     public String toString() {

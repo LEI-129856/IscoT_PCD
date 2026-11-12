@@ -13,7 +13,7 @@ import iscot.enums.Areas;
  */
 public abstract class Event implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final DateTimeFormatter FORMATO = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private static final DateTimeFormatter FORMATO = DateTimeFormatter.ofPattern("HH:mm:ss"); //o enunciado pede neste formato
 
     private final String senderId;     // ID do dispositivo que criou o evento (null antes do registo)
     private final Areas area;          // divisão da casa a que o evento diz respeito

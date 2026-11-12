@@ -11,5 +11,7 @@ public class TemperatureSensorEvent extends SensorEvent {
     }
 
     @Override
-    public String getUnit() { return "°C"; }
+    public String getUnit() {
+        return "°C";
+    }
 }

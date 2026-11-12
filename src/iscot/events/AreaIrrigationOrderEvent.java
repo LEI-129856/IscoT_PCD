@@ -11,18 +11,26 @@ public class AreaIrrigationOrderEvent extends HighLevelOrderEvent {
 
     public AreaIrrigationOrderEvent(String senderId, Areas area, boolean on, int zone, int duration) {
         super(senderId, area, on);
+
         if (zone < 1 || zone > 3) {
             throw new IllegalArgumentException("A zona deve ser 1, 2 ou 3.");
         }
+
         if (duration < 0) {
             throw new IllegalArgumentException("A duração não pode ser negativa.");
         }
+
         this.zone = zone;
         this.duration = duration;
     }
 
-    public int getZone() { return zone; }
-    public int getDuration() { return duration; }
+    public int getZone() {
+        return zone;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
 
     @Override
     public String toString() {

@@ -6,14 +6,16 @@ import iscot.enums.Areas;
 public abstract class HighLevelOrderEvent extends Event {
     private static final long serialVersionUID = 1L;
 
-    private final boolean on; // ligar (true) ou desligar (false)
+    private final boolean on; // ligar (true) ou desligar (false) - única coisa em comum
 
     protected HighLevelOrderEvent(String senderId, Areas area, boolean on) {
         super(senderId, area);
         this.on = on;
     }
 
-    public boolean isOn() { return on; }
+    public boolean isOn() {
+        return on;
+    }
 
     @Override
     public String toString() {
