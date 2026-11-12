@@ -2,6 +2,7 @@ package iscot.client;
 
 import iscot.client.gui.LightIcon;
 import iscot.enums.Areas;
+import iscot.events.AreaLightingOrderEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,32 +27,67 @@ public class Light {
 		}
 		else {
 			// TODO connect to server
-			
+
 			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
-			
-			JFrame janela = new JFrame("Lâmapda em "+area);
+
+			JFrame janela = new JFrame("Lâmpada em "+area);
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		
-			
+
+
 			// Criar os componentes gráficos
 			JPanel painel=new JPanel();
 			painel.setLayout(new BorderLayout());
 			LightIcon lampada = new LightIcon();
 			painel.add(lampada,BorderLayout.CENTER);
+
+			JTextArea historico = new JTextArea(5, 25);// caixa de texto com 5 linhas por 25 colunas
+			historico.setEditable(false); // o utilizador só lê, não escreve
+			painel.add(new JScrollPane(historico), BorderLayout.SOUTH); // com scroll, por baixo do ícone
+
 			janela.setContentPane(painel);
 			janela.setLocation(100, 100);
 			janela.setMinimumSize(janela.getSize());
 			janela.pack();
 			janela.setVisible(true);
-			
+
 			Thread.sleep(5000);
 			lampada.setLigada(true);
 
 			// TODO: receive and handle messages from server
-			
+
 			// TODO: for first phase: create an appropriate event hardcoded locally and change the GUI accordingly
+			// Fase 3: ordens criadas à mão, a simular as que vão chegar do servidor
+			String decisorTeste = "DecisorTeste"; // no sistema final, quem cria as ordens é um decisor
+			Thread.sleep(3000);
+			aplicarOrdem(lampada, historico, new AreaLightingOrderEvent(decisorTeste, area, true, 80));
+			Thread.sleep(3000);
+			aplicarOrdem(lampada, historico, new AreaLightingOrderEvent(decisorTeste, area, true, 30));
+			Thread.sleep(3000);
+			aplicarOrdem(lampada, historico, new AreaLightingOrderEvent(decisorTeste, area, false, 0));
 		}
 	}
+
+	/**
+     * Executa uma ordem de iluminação: muda o ícone e regista a ação no histórico.
+     * Na fase 3 é chamado pelo main com ordens de teste; na fase 5 vai ser chamado
+     * pela thread que recebe as ordens do servidor.
+     */
+    private static void aplicarOrdem(LightIcon lampada, JTextArea historico, AreaLightingOrderEvent ordem) {
+        // 1. Mudar o ícone de acordo com a ordem
+        lampada.setLigada(ordem.isOn());
+        lampada.setIntensidade(ordem.getIntensity());
+
+        // 2. Montar a linha do histórico: "Lâmpada ligada (80%) - HH:MM:SS"
+        String linha;
+        if (ordem.isOn()) {
+            linha = "Lâmpada ligada (" + ordem.getIntensity() + "%) - " + ordem.getFormattedTime();
+        } else {
+            linha = "Lâmpada desligada - " + ordem.getFormattedTime();
+        }
+
+        // 3. Acrescentar ao histórico na thread do Swing (EDT)
+        SwingUtilities.invokeLater(() -> historico.append(linha + "\n"));
+    }
 }
