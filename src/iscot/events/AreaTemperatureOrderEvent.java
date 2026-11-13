@@ -12,6 +12,11 @@ public class AreaTemperatureOrderEvent extends HighLevelOrderEvent {
 
     public AreaTemperatureOrderEvent(String senderId, Areas area, AirConditioningMode mode, double temperature) {
         super(senderId, area, mode != AirConditioningMode.Desligado); // o modo já diz se é para ligar
+
+        if (mode == null) {
+            throw new IllegalArgumentException("O modo não pode ser null.");
+        }
+
         if (temperature < 16 || temperature > 30) {
             throw new IllegalArgumentException("A temperatura deve estar entre 16 e 30 °C.");
         }
@@ -29,6 +34,6 @@ public class AreaTemperatureOrderEvent extends HighLevelOrderEvent {
 
     @Override
     public String toString() {
-        return super.toString() + ", modo=" + mode + ", temperatura=" + temperature + " °C";
+        return super.toString() + ", modo = " + mode + ", temperatura = " + temperature + " °C";
     }
 }

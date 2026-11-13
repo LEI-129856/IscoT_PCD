@@ -37,7 +37,7 @@ public class TemperatureSensor {
 			// Criar os componentes gráficos
 			JPanel painel=new JPanel();
 			painel.setLayout(new BorderLayout());
-			SensorControl sensorControl= new SensorControl( "☀", "Temperatura - "+area, "ºC",
+			SensorControl sensorControl= new SensorControl( "♨", "Temperatura - "+area, "ºC",
 				    0, 40, 1, 20,
 				    valor -> {
 						TemperatureSensorEvent evento = new TemperatureSensorEvent(senderId, area, valor);
@@ -45,7 +45,7 @@ public class TemperatureSensor {
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);
 			janela.setContentPane(painel);
-			janela.setLocation(450, 400);
+			janela.setLocation(850, 400);
 			janela.setMinimumSize(janela.getSize());
 			janela.pack();
 			janela.setVisible(true);

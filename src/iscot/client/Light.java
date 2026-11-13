@@ -47,13 +47,13 @@ public class Light {
 			painel.add(new JScrollPane(historico), BorderLayout.SOUTH); // com scroll, por baixo do ícone
 
 			janela.setContentPane(painel);
-			janela.setLocation(100, 100);
+			janela.setLocation(50, 50);
 			janela.setMinimumSize(janela.getSize());
 			janela.pack();
 			janela.setVisible(true);
 
-			Thread.sleep(5000);
-			lampada.setLigada(true);
+			//Thread.sleep(5000);
+			//lampada.setLigada(true);
 
 			// TODO: receive and handle messages from server
 

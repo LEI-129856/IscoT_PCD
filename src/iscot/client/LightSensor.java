@@ -47,7 +47,7 @@ public class LightSensor {
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);
 			janela.setContentPane(painel);
-			janela.setLocation(100, 400);
+			janela.setLocation(50, 450);
 			janela.setMinimumSize(janela.getSize());
 			janela.pack();
 			janela.setVisible(true);

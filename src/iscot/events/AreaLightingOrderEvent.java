@@ -22,6 +22,6 @@ public class AreaLightingOrderEvent extends HighLevelOrderEvent {
 
     @Override
     public String toString() {
-        return super.toString() + ", intensidade=" + intensity;
+        return super.toString() + ", intensidade = " + intensity;
     }
 }

@@ -49,14 +49,14 @@ public class AirConditioner {
 			painel.add(new JScrollPane(historico), BorderLayout.SOUTH);
 
 			janela.setContentPane(painel);
-			janela.setLocation(350, 100);
+			janela.setLocation(400, 50);
 			janela.setMinimumSize(janela.getSize());
 			janela.pack();
 			janela.setVisible(true);
 			
-			Thread.sleep(5000);
+			/*Thread.sleep(5000);
 			ac.setModo(AirConditioningMode.Frio);
-			ac.setTemperatura(22);
+			ac.setTemperatura(22);*/
 
 			// TODO: receive and handle messages from server
 			

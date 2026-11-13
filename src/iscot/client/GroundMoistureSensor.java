@@ -37,7 +37,7 @@ public class GroundMoistureSensor {
 			// Criar os componentes gráficos
 			JPanel painel=new JPanel();
 			painel.setLayout(new BorderLayout());
-			SensorControl sensorControl= new SensorControl( "☀", "Humidade do solo - "+area, "%",
+			SensorControl sensorControl= new SensorControl( "☘", "Humidade do solo - "+area, "%",
 				    0, 100, 1, 50,
 				    valor -> {
 				    	// TODO handle change in sensor
@@ -46,7 +46,7 @@ public class GroundMoistureSensor {
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);
 			janela.setContentPane(painel);
-			janela.setLocation(800, 400);
+			janela.setLocation(450, 650);
 			janela.setMinimumSize(janela.getSize());
 			janela.pack();
 			janela.setVisible(true);

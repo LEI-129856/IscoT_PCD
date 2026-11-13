@@ -34,6 +34,6 @@ public class AreaIrrigationOrderEvent extends HighLevelOrderEvent {
 
     @Override
     public String toString() {
-        return super.toString() + ", zona=" + zone + ", duração=" + duration;
+        return super.toString() + ", zona = " + zone + ", duração = " + duration;
     }
 }

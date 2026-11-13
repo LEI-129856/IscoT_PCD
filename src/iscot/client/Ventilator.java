@@ -1,18 +1,12 @@
 package iscot.client;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.swing.*;
 
-import iscot.client.gui.LightIcon;
 import iscot.client.gui.VentilatorIcon;
 import iscot.enums.Areas;
-import iscot.enums.Type;
 import iscot.events.AreaVentilationOrderEvent;
 
 public class Ventilator {
@@ -54,13 +48,13 @@ public class Ventilator {
 			painel.add(new JScrollPane(historico), BorderLayout.SOUTH);
 
 			janela.setContentPane(painel);
-			janela.setLocation(600, 400);
+			janela.setLocation(1100, 50);
 			janela.setMinimumSize(janela.getSize());
 			janela.pack();
 			janela.setVisible(true);
 			
-			Thread.sleep(5000);
-			ventilator.setAtivo(true);
+			/*Thread.sleep(5000);
+			ventilator.setAtivo(true);*/
 
 			// TODO: receive and handle messages from server
 			

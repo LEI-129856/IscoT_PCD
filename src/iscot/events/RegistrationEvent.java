@@ -23,6 +23,6 @@ public class RegistrationEvent extends Event {
 
     @Override
     public String toString() {
-        return super.toString() + " | tipo=" + clientType;
+        return super.toString() + " | tipo = " + clientType;
     }
 }

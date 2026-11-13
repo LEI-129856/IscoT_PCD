@@ -48,13 +48,13 @@ public class Irrigation {
 			painel.add(new JScrollPane(historico), BorderLayout.SOUTH);
 
 			janela.setContentPane(painel);
-			janela.setLocation(600, 100);
+			janela.setLocation(750, 50);
 			janela.setMinimumSize(janela.getSize());
 			janela.pack();
 			janela.setVisible(true);
 			
-			Thread.sleep(5000);
-			rega.setAtiva(true);
+			/*Thread.sleep(5000);
+			rega.setAtiva(true);*/
 
 			// TODO: receive and handle messages from server
 			
