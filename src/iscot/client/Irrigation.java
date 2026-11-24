@@ -48,7 +48,7 @@ public class Irrigation {
 			}
 			System.out.println("Registado com o ID " + ligacao.getDeviceId());
 
-			JFrame janela = new JFrame("Rega em "+area);
+			JFrame janela = new JFrame("Rega em "+ area + " [" + ligacao.getDeviceId() + "]");
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		

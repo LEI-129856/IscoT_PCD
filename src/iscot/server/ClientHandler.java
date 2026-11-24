@@ -58,7 +58,7 @@ public class ClientHandler extends Thread {
             }
 
         } catch (EOFException e) {
-            System.out.println("Cliente " + (deviceId != null ? deviceId : endereco + " desligou-se"));
+            System.out.println("Cliente " + (deviceId != null ? deviceId : endereco) + " desligou-se");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Erro com o cliente " + (deviceId != null ? deviceId : endereco) + ": " + e.getMessage());
         } finally {
