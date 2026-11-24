@@ -8,6 +8,7 @@ import iscot.events.LightSensorEvent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class LightSensor {
 
@@ -30,12 +31,18 @@ public class LightSensor {
 		}
 
 		else {
-			// TODO connect to the server
-
-			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
 			String tipo = args[3];
-			String senderId = "LightSensor-" + area; // provisório: na fase 4 passa a ser o ID dado pelo servidor
+
+			// Ligar ao servidor e registar (fase 4)
+			ServerConnection ligacao;
+			try {
+				ligacao = ServerConnection.ligar(args[0], Integer.parseInt(args[1]), area, tipo);
+			} catch (IOException e) {
+				System.err.println("Não foi possível ligar ao servidor: " + e.getMessage());
+				return;
+			}
+			System.out.println("Registado com o ID " + ligacao.getDeviceId());
 			
 
 			JFrame janela = new JFrame("Luminosidade em "+area);
@@ -49,7 +56,7 @@ public class LightSensor {
 				    0, 100, 1, 50,
 				    valor -> {
 				    	// TODO handle change in sensor
-						LightSensorEvent evento = new LightSensorEvent(senderId, area, valor);
+						LightSensorEvent evento = new LightSensorEvent(ligacao.getDeviceId(), area, valor);
 						System.out.println(evento);
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);

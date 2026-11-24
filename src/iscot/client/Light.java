@@ -22,6 +22,10 @@ public class Light {
 	 * @throws InterruptedException 
 	 * @throws ClassNotFoundException 
 	 */
+
+	// Guardada num campo para a ligação não ser "limpa" (e fechada) quando o main termina
+	private static ServerConnection ligacao;
+
 	public static void main(String[] args) throws NumberFormatException, UnknownHostException, IOException, InterruptedException, ClassNotFoundException {
 		if(args.length!=4) {
 			System.err.println("Deveria ser: Light IP PORTO Área Tipo");
@@ -32,14 +36,20 @@ public class Light {
 		}
 
 		else {
-			// TODO connect to server
-
-			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
 			String tipo = args[3];
-			JFrame janela = new JFrame("Lâmpada em "+area);
-			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+			// Ligar ao servidor e registar (fase 4)
+			try {
+				ligacao = ServerConnection.ligar(args[0], Integer.parseInt(args[1]), area, tipo);
+			} catch (IOException e) {
+				System.err.println("Não foi possível ligar ao servidor: " + e.getMessage());
+				return;
+			}
+			System.out.println("Registado com o ID " + ligacao.getDeviceId());
+
+			JFrame janela = new JFrame("Lâmpada em "+ area + " [" + ligacao.getDeviceId() + "]");
+			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 
 			// Criar os componentes gráficos
