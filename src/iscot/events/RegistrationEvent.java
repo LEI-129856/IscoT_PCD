@@ -7,9 +7,9 @@ import iscot.enums.Type;
 public class RegistrationEvent extends Event {
     private static final long serialVersionUID = 1L;
 
-    private final Type clientType;
+    private final String clientType;
 
-    public RegistrationEvent(Areas area, Type clientType) {
+    public RegistrationEvent(Areas area, String clientType) {
         super(null, area); // ainda não tem ID: é o servidor que o vai atribuir
         if (clientType == null) {
             throw new IllegalArgumentException("O tipo de cliente não pode ser null.");
@@ -17,7 +17,7 @@ public class RegistrationEvent extends Event {
         this.clientType = clientType;
     }
 
-    public Type getClientType() {
+    public String getClientType() {
         return clientType;
     }
 
