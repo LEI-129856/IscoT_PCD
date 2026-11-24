@@ -49,7 +49,7 @@ public class AirConditioner {
 			}
 			System.out.println("Registado com o ID " + ligacao.getDeviceId());
 			
-			JFrame janela = new JFrame("Ar condicionado em "+area);
+			JFrame janela = new JFrame("Ar condicionado em "+ area + " [" + ligacao.getDeviceId() + "]");
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		

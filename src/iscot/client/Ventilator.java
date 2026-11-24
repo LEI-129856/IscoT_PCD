@@ -48,7 +48,7 @@ public class Ventilator {
 			}
 			System.out.println("Registado com o ID " + ligacao.getDeviceId());
 
-			JFrame janela = new JFrame("Ventilador em "+area);
+			JFrame janela = new JFrame("Ventilador em "+ area + " [" + ligacao.getDeviceId() + "]");
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		
