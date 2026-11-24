@@ -7,6 +7,7 @@ import iscot.events.GroundMoistureSensorEvent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class GroundMoistureSensor {
 
@@ -29,15 +30,20 @@ public class GroundMoistureSensor {
 		}
 
 		else {
-			// TODO connect to the server
-
-			// TODO register with the server
-			Areas area=Areas.valueOf(args[2]);
+			Areas area = Areas.valueOf(args[2]);
 			String tipo = args[3];
-			String senderId = "GroundMoistureSensor-" + area; // provisório: na fase 4 passa a ser o ID dado pelo servidor
 
+			// Ligar ao servidor e registar (fase 4)
+			ServerConnection ligacao;
+			try {
+				ligacao = ServerConnection.ligar(args[0], Integer.parseInt(args[1]), area, tipo);
+			} catch (IOException e) {
+				System.err.println("Não foi possível ligar ao servidor: " + e.getMessage());
+				return;
+			}
+			System.out.println("Registado com o ID " + ligacao.getDeviceId());
 
-			JFrame janela = new JFrame("Humidade do solo em "+area);
+			JFrame janela = new JFrame("Humidade do solo em " + area + " [" + ligacao.getDeviceId() + "]");
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 			
@@ -48,7 +54,7 @@ public class GroundMoistureSensor {
 				    0, 100, 1, 50,
 				    valor -> {
 				    	// TODO handle change in sensor
-						GroundMoistureSensorEvent evento = new GroundMoistureSensorEvent(senderId, area, valor);
+						GroundMoistureSensorEvent evento = new GroundMoistureSensorEvent(ligacao.getDeviceId(), area, valor);
 						System.out.println(evento);
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);

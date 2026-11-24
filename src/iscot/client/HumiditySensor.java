@@ -1,6 +1,7 @@
 package iscot.client;
 
 import java.awt.BorderLayout;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import iscot.client.gui.SensorControl;
@@ -29,14 +30,21 @@ public class HumiditySensor {
 		}
 
 		else {
-			// TODO connect to the server
-
-			// TODO register with the server
-			Areas area=Areas.valueOf(args[2]);
+			Areas area = Areas.valueOf(args[2]);
 			String tipo = args[3];
-			String senderId = "HumiditySensor-" + area; // provisório: na fase 4 passa a ser o ID dado pelo servidor
 
-			JFrame janela = new JFrame("Humidade em "+area);
+			// Ligar ao servidor e registar (fase 4)
+			ServerConnection ligacao;
+			try {
+				ligacao = ServerConnection.ligar(args[0], Integer.parseInt(args[1]), area, tipo);
+			} catch (IOException e) {
+				System.err.println("Não foi possível ligar ao servidor: " + e.getMessage());
+				return;
+			}
+
+			System.out.println("Registado com o ID " + ligacao.getDeviceId());
+
+			JFrame janela = new JFrame("Humidade em "+ area + " [" + ligacao.getDeviceId() + "]");
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 			
@@ -47,7 +55,7 @@ public class HumiditySensor {
 				    0, 100, 1, 50,
 				    valor -> {
 				    	// TODO handle change in sensor
-						HumiditySensorEvent evento = new HumiditySensorEvent(senderId, area, valor);
+						HumiditySensorEvent evento = new HumiditySensorEvent(ligacao.getDeviceId(), area, valor);
 						System.out.println(evento);
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);
