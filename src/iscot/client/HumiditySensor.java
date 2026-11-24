@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import iscot.client.gui.SensorControl;
 import iscot.enums.Areas;
+import iscot.enums.Type;
 import iscot.events.HumiditySensorEvent;
 
 public class HumiditySensor {
@@ -19,14 +20,20 @@ public class HumiditySensor {
 	 * @throws InterruptedException 
 	 */
 	public static void main(String[] args) throws NumberFormatException, InterruptedException {
-		if(args.length!=3) {
-			System.err.println("Invalid arguments!");
+		if(args.length!=4) {
+			System.err.println("Deveria ser: HumiditySensor IP PORTO Área Tipo");
 		}
+
+		else if (!ClientArgs.tipoValido(args[3], Type.SENSOR)) {
+			System.err.println("Este programa é um " + Type.SENSOR + ", não um " + args[3] + ".");
+		}
+
 		else {
 			// TODO connect to the server
 
 			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
+			String tipo = args[3];
 			String senderId = "HumiditySensor-" + area; // provisório: na fase 4 passa a ser o ID dado pelo servidor
 
 			JFrame janela = new JFrame("Humidade em "+area);
