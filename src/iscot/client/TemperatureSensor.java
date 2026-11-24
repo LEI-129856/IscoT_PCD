@@ -7,6 +7,7 @@ import iscot.enums.Type;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class TemperatureSensor {
 
@@ -29,15 +30,20 @@ public class TemperatureSensor {
 		}
 
 		else {
-			// TODO connect to the server
-
-			// TODO register with the server
-			Areas area=Areas.valueOf(args[2]);
+			Areas area = Areas.valueOf(args[2]);
 			String tipo = args[3];
-			String senderId = "TemperatureSensor-" + area;
-			
 
-			JFrame janela = new JFrame("Temperatura em "+area);
+			// Ligar ao servidor e registar (fase 4)
+			ServerConnection ligacao;
+			try {
+				ligacao = ServerConnection.ligar(args[0], Integer.parseInt(args[1]), area, tipo);
+			} catch (IOException e) {
+				System.err.println("Não foi possível ligar ao servidor: " + e.getMessage());
+				return;
+			}
+			System.out.println("Registado com o ID " + ligacao.getDeviceId());
+
+			JFrame janela = new JFrame("Temperatura em " + area + " [" + ligacao.getDeviceId() + "]");
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 			
@@ -47,7 +53,7 @@ public class TemperatureSensor {
 			SensorControl sensorControl= new SensorControl( "♨", "Temperatura - "+area, "ºC",
 				    0, 40, 0.5, 20,
 				    valor -> {
-						TemperatureSensorEvent evento = new TemperatureSensorEvent(senderId, area, valor);
+						TemperatureSensorEvent evento = new TemperatureSensorEvent(ligacao.getDeviceId(), area, valor);
 						System.out.println(evento);
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);

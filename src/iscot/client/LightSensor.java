@@ -45,7 +45,7 @@ public class LightSensor {
 			System.out.println("Registado com o ID " + ligacao.getDeviceId());
 			
 
-			JFrame janela = new JFrame("Luminosidade em "+area);
+			JFrame janela = new JFrame("Luminosidade em "+area + " [" + ligacao.getDeviceId() + "]");
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 			
