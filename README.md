@@ -140,7 +140,7 @@ java -cp bin iscot.<ClasseCliente> localhost 8080 KITCHEN ACTUATOR
 - [x] **Fase 1** — GUI: componentes gráficos dos sensores e atuadores
 - [x] ~~Fase 2~~ — suprimida (já resolvida no código base através dos enums `Areas` e `Type`)
 - [x] **Fase 3** — Representação de eventos nas janelas da GUI (eventos de exemplo nos atuadores; eventos gerados pelos sensores apresentados na consola)
-- [ ] **Fase 4** — Servidor e ligação inicial dos clientes (modelo cliente-servidor)
+- [x] **Fase 4** — Servidor e ligação inicial dos clientes (modelo cliente-servidor)
 - [ ] **Fase 5** — Troca de eventos entre clientes e servidor (canais de objetos)
 - [ ] **Fase 6** — Troca simples de eventos (1 sensor, 1 decisor, 1 atuador)
 - [ ] **Fase 7** — Consulta dos eventos com `ModifiedCountdownLatch` por tópico
