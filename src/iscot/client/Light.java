@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import iscot.enums.Type;
 
 public class Light {
 
@@ -22,15 +23,20 @@ public class Light {
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws NumberFormatException, UnknownHostException, IOException, InterruptedException, ClassNotFoundException {
-		if(args.length!=3) {
-			System.err.println("Invalid arguments!");
+		if(args.length!=4) {
+			System.err.println("Deveria ser: Light IP PORTO Área Tipo");
 		}
+
+		else if (!ClientArgs.tipoValido(args[3], Type.ACTUATOR)) {
+			System.err.println("Este programa é um " + Type.ACTUATOR + ", não um " + args[3] + ".");
+		}
+
 		else {
 			// TODO connect to server
 
 			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
-
+			String tipo = args[3];
 			JFrame janela = new JFrame("Lâmpada em "+area);
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

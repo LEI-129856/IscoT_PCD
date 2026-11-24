@@ -8,6 +8,7 @@ import javax.swing.*;
 import iscot.client.gui.VentilatorIcon;
 import iscot.enums.Areas;
 import iscot.events.AreaVentilationOrderEvent;
+import iscot.enums.Type;
 
 public class Ventilator {
 
@@ -22,15 +23,20 @@ public class Ventilator {
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws NumberFormatException, UnknownHostException, IOException, InterruptedException, ClassNotFoundException {
-		if(args.length!=3) {
-			System.err.println("Invalid arguments!");
+		if(args.length!=4) {
+			System.err.println("Deveria ser: Ventilator IP PORTO Área Tipo");
 		}
+
+		else if (!ClientArgs.tipoValido(args[3], Type.ACTUATOR)) {
+			System.err.println("Este programa é um " + Type.ACTUATOR + ", não um " + args[3] + ".");
+		}
+
 		else {
 			// TODO connect to server
 			
 			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
-			
+			String tipo = args[3];
 			JFrame janela = new JFrame("Ventilador em "+area);
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
