@@ -83,7 +83,7 @@ public class Light {
 				}
 			});
 
-			// TODO: for first phase: create an appropriate event hardcoded locally and change the GUI accordingly
+			/* TODO: for first phase: create an appropriate event hardcoded locally and change the GUI accordingly
 			// Fase 3: ordens criadas à mão, a simular as que vão chegar do servidor
 			String decisorTeste = "DecisorTeste"; // no sistema final, quem cria as ordens é um decisor
 			Thread.sleep(3000);
@@ -91,7 +91,7 @@ public class Light {
 			Thread.sleep(3000);
 			aplicarOrdem(lampada, historico, new AreaLightingOrderEvent(decisorTeste, area, true, 30));
 			Thread.sleep(3000);
-			aplicarOrdem(lampada, historico, new AreaLightingOrderEvent(decisorTeste, area, false, 0));
+			aplicarOrdem(lampada, historico, new AreaLightingOrderEvent(decisorTeste, area, false, 0));*/
 		}
 	}
 

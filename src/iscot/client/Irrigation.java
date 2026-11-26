@@ -85,7 +85,7 @@ public class Irrigation {
 				}
 			});
 			
-			// TODO: for first phase: create an appropriate event hardcoded locally and change the GUI accordingly
+			/* TODO: for first phase: create an appropriate event hardcoded locally and change the GUI accordingly
 			// Fase 3: ordens criadas à mão, a simular as que vão chegar do servidor
 			String decisorTeste = "DecisorTeste"; // no sistema final, quem cria as ordens é um decisor
 			Thread.sleep(3000);
@@ -93,7 +93,7 @@ public class Irrigation {
 			Thread.sleep(3000);
 			aplicarOrdem(rega, historico, new AreaIrrigationOrderEvent(decisorTeste, area, true, 2, 15));
 			Thread.sleep(3000);
-			aplicarOrdem(rega, historico, new AreaIrrigationOrderEvent(decisorTeste, area, false, 1, 0));
+			aplicarOrdem(rega, historico, new AreaIrrigationOrderEvent(decisorTeste, area, false, 1, 0)); */
 		}
 	}
 
