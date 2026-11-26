@@ -55,7 +55,12 @@ public class TemperatureSensor {
 				    0, 40, 0.5, 20,
 				    valor -> {
 						TemperatureSensorEvent evento = new TemperatureSensorEvent(ligacao.getDeviceId(), area, valor);
-						System.out.println(evento);
+						try {
+							ligacao.enviar(evento); // fase 5: o evento vai para o servidor
+							System.out.println("Enviado: " + evento);
+						} catch (IOException e) {
+							System.err.println("Não foi possível enviar o evento: " + e.getMessage());
+						}
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);
 			janela.setContentPane(painel);

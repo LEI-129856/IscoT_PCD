@@ -55,9 +55,13 @@ public class HumiditySensor {
 			SensorControl sensorControl= new SensorControl( "☂", "Humidade - "+area, "%",
 				    0, 100, 1, 50,
 				    valor -> {
-				    	// TODO handle change in sensor
 						HumiditySensorEvent evento = new HumiditySensorEvent(ligacao.getDeviceId(), area, valor);
-						System.out.println(evento);
+						try {
+							ligacao.enviar(evento); // fase 5: o evento vai para o servidor
+							System.out.println("Enviado: " + evento);
+						} catch (IOException e) {
+							System.err.println("Não foi possível enviar o evento: " + e.getMessage());
+						}
 				    });
 			painel.add(sensorControl,BorderLayout.CENTER);
 			janela.setContentPane(painel);

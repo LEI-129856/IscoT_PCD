@@ -19,6 +19,7 @@ public class Server {
         else {
             int porto = Integer.parseInt(args[0]);
             IdGenerator ids = new IdGenerator(); // partilhado por todas as threads dos clientes
+            ClientRegistry clientes = new ClientRegistry(); // Lista dos clientes registados
 
             try (ServerSocket serverSocket = new ServerSocket(porto)) {
                 System.out.println("Servidor IscoT à escuta no porto " + porto);
@@ -28,7 +29,7 @@ public class Server {
                     System.out.println("Nova ligação de " + socket.getRemoteSocketAddress());
 
                     // Cada cliente tem a sua própria thread; a principal volta logo ao accept()
-                    ClientHandler handler = new ClientHandler(socket, ids);
+                    ClientHandler handler = new ClientHandler(socket, ids, clientes);
                     handler.start(); // start(), não run(): corre numa thread nova
                 }
             } catch (IOException e) {

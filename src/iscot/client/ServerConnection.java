@@ -1,6 +1,7 @@
 package iscot.client;
 
 import iscot.enums.Areas;
+import iscot.events.Event;
 import iscot.events.RegistrationEvent;
 import iscot.events.RegistrationReply;
 import iscot.enums.Subscription;
@@ -67,5 +68,16 @@ public class ServerConnection {
         return deviceId;
     }
 
-    // TODO (fase 5): métodos para enviar e receber eventos (usam out e in)
+    /**
+     * NOVO (fase 5): envia um evento ao servidor.
+     * synchronized para que, se duas threads deste cliente enviarem ao mesmo tempo,
+     * os bytes dos dois objetos não se misturem no stream.
+     */
+    public synchronized void enviar(Event evento) throws IOException {
+        out.writeObject(evento);
+        out.flush();
+        out.reset(); // esquece os objetos já enviados (senão o stream guarda referências a todos)
+    }
+
+    // TODO (fase 5, passo 9): método para receber eventos (usa in)
 }
