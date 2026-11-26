@@ -3,6 +3,7 @@ package iscot.server;
 import iscot.enums.Areas;
 import iscot.enums.Subscription;
 import iscot.enums.Type;
+import iscot.events.Event;
 import iscot.events.RegistrationEvent;
 import iscot.events.RegistrationReply;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 /**
  * Thread dedicada a um cliente (secção 1.1 do enunciado).
@@ -24,6 +26,7 @@ public class ClientHandler extends Thread {
     private ObjectInputStream in;
 
     private final IdGenerator ids;
+    private final ClientRegistry clientes;
 
     // Preenchidos quando o registo é aceite
     private String deviceId;
@@ -31,9 +34,10 @@ public class ClientHandler extends Thread {
     private Areas area;
     private Subscription subscription;
 
-    public ClientHandler(Socket socket, IdGenerator ids) {
+    public ClientHandler(Socket socket, IdGenerator ids, ClientRegistry clientes) {
         this.socket = socket;
         this.ids = ids;
+        this.clientes = clientes;
         this.endereco = socket.getRemoteSocketAddress().toString();
     }
 
@@ -53,10 +57,13 @@ public class ClientHandler extends Thread {
             }
 
             // 2. Ligação aceite: fica à espera dos eventos deste cliente
-            // TODO (fase 5): tratar os eventos recebidos e encaminhá-los
             while (true) {
                 Object recebido = in.readObject();
-                System.out.println("Recebido de " + deviceId + ": " + recebido);
+                if (recebido instanceof Event) {
+                    reencaminhar((Event) recebido);
+                } else {
+                    System.out.println("Ignorado objeto que não é um Event, de " + deviceId + ": " + recebido);
+                }
             }
 
         } catch (EOFException e) {
@@ -64,6 +71,7 @@ public class ClientHandler extends Thread {
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Erro com o cliente " + (deviceId != null ? deviceId : endereco) + ": " + e.getMessage());
         } finally {
+            clientes.remover(this);
             try {
                 socket.close(); // liberta os recursos deste cliente
             } catch (IOException e) {
@@ -104,9 +112,40 @@ public class ClientHandler extends Thread {
         deviceId = ids.novoId(tipo);
         out.writeObject(RegistrationReply.aceite(deviceId));
         out.flush();
+        clientes.adicionar(this); // NOVO: a partir daqui pode receber eventos
         System.out.println("Registado " + deviceId + " (" + tipo + " em " + area
                 + ", subscreve " + subscription + ") a partir de " + endereco);
         return true;
+    }
+
+    /**
+     * Fase5: entrega um evento recebido deste cliente a todos os interessados.
+     * A lista de destinatários é uma cópia, por isso os envios são feitos fora do
+     * lock do ClientRegistry.
+     */
+    private void reencaminhar(Event evento) {
+        List<ClientHandler> destinos = clientes.destinatarios(evento);
+        System.out.println("Recebido de " + deviceId + ": " + evento + " -> " + destinos.size() + " destinatário(s)");
+        for (ClientHandler destino : destinos) {
+            try {
+                destino.enviar(evento);
+            } catch (IOException e) {
+                // A ligação desse cliente falhou: a thread dele vai detetá-lo e removê-lo da lista
+                System.out.println("Não foi possível enviar a " + destino.getDeviceId() + ": " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Fase5: envia um evento a ESTE cliente.
+     * synchronized porque várias threads (as dos outros clientes) podem chamar este
+     * método ao mesmo tempo, e dois writeObject em simultâneo no mesmo stream
+     * misturavam os bytes e corrompiam a ligação.
+     */
+    public synchronized void enviar(Event evento) throws IOException {
+        out.writeObject(evento);
+        out.flush();
+        out.reset(); // esquece os objetos já enviados (senão o stream guarda referências a todos)
     }
 
     /** Cada tipo de cliente só pode ter certas subscrições. */
