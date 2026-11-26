@@ -3,6 +3,7 @@ package iscot.client;
 import iscot.enums.Areas;
 import iscot.events.RegistrationEvent;
 import iscot.events.RegistrationReply;
+import iscot.enums.Subscription;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,7 +34,7 @@ public class ServerConnection {
      * @return a ligação, já registada e com o ID atribuído pelo servidor
      * @throws IOException se não conseguir ligar ou se o registo for recusado
      */
-    public static ServerConnection ligar(String ip, int porto, Areas area, String tipo) throws IOException {
+    public static ServerConnection ligar(String ip, int porto, Areas area, String tipo, Subscription subscricao) throws IOException {
         Socket socket = new Socket(ip, porto); // lança IOException se o servidor não estiver ligado
         try {
             // Mesma ordem que no servidor: primeiro o OutputStream (+ flush), depois o InputStream
@@ -41,8 +42,8 @@ public class ServerConnection {
             out.flush();
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
-            // Registo
-            out.writeObject(new RegistrationEvent(area, tipo));
+            // Registo, com a subscricao
+            out.writeObject(new RegistrationEvent(area, tipo, subscricao));
             out.flush();
             RegistrationReply resposta = (RegistrationReply) in.readObject();
 

@@ -3,6 +3,7 @@ package iscot.client;
 import iscot.client.gui.ACIcon;
 import iscot.enums.Areas;
 import iscot.enums.AirConditioningMode;
+import iscot.enums.Subscription;
 import iscot.events.AreaTemperatureOrderEvent;
 
 import javax.swing.*;
@@ -42,7 +43,7 @@ public class AirConditioner {
 
 			// Ligar ao servidor e registar (fase 4)
 			try {
-				ligacao = ServerConnection.ligar(args[0], Integer.parseInt(args[1]), area, tipo);
+				ligacao = ServerConnection.ligar(args[0], Integer.parseInt(args[1]), area, tipo, Subscription.TEMPERATURE_ORDERS);
 			} catch (IOException e) {
 				System.err.println("Não foi possível ligar ao servidor: " + e.getMessage());
 				return;
