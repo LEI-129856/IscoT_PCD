@@ -1,6 +1,7 @@
 package iscot.server;
 
 import iscot.enums.Areas;
+import iscot.enums.Subscription;
 import iscot.enums.Type;
 import iscot.events.RegistrationEvent;
 import iscot.events.RegistrationReply;
@@ -28,6 +29,7 @@ public class ClientHandler extends Thread {
     private String deviceId;
     private Type tipo;
     private Areas area;
+    private Subscription subscription;
 
     public ClientHandler(Socket socket, IdGenerator ids) {
         this.socket = socket;
@@ -89,14 +91,32 @@ public class ClientHandler extends Thread {
             return recusar("Tipo de dispositivo não suportado: DWC");
         }
 
+        //Validar se a subscrição faz sentido para este tipo
+        Subscription sub = registo.getSubscription();
+        if (!subscricaoValida(tipoRecebido, sub)) {
+            return recusar("Subscrição " + sub + " inválida para um " + tipoRecebido);
+        }
+
         // Registo aceite: gerar o ID único e responder
         tipo = tipoRecebido;
         area = registo.getArea();
+        subscription = sub;
         deviceId = ids.novoId(tipo);
         out.writeObject(RegistrationReply.aceite(deviceId));
         out.flush();
-        System.out.println("Registado " + deviceId + " (" + tipo + " em " + area + ") a partir de " + endereco);
+        System.out.println("Registado " + deviceId + " (" + tipo + " em " + area
+                + ", subscreve " + subscription + ") a partir de " + endereco);
         return true;
+    }
+
+    /** Cada tipo de cliente só pode ter certas subscrições. */
+    private boolean subscricaoValida(Type tipo, Subscription sub) {
+        switch (tipo) {
+            case SENSOR:   return sub == Subscription.NONE;            // sensores só publicam
+            case ACTUATOR: return sub.isOrdem();                       // atuadores recebem ordens
+            case DECIDER:  return sub == Subscription.SENSOR_READINGS; // decisores recebem leituras
+            default:       return false;
+        }
     }
 
     private boolean recusar(String motivo) throws IOException {
@@ -104,5 +124,18 @@ public class ClientHandler extends Thread {
         out.flush();
         System.out.println("Registo recusado de " + endereco + ": " + motivo);
         return false;
+    }
+
+    // NOVO: getters usados pelo servidor no passo 7, para decidir a quem entregar cada evento
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public Areas getArea() {
+        return area;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
     }
 }

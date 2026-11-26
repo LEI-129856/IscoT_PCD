@@ -2,6 +2,7 @@ package iscot.client;
 
 import iscot.client.gui.SensorControl;
 import iscot.enums.Areas;
+import iscot.enums.Subscription;
 import iscot.enums.Type;
 import iscot.events.GroundMoistureSensorEvent;
 
@@ -36,7 +37,7 @@ public class GroundMoistureSensor {
 			// Ligar ao servidor e registar (fase 4)
 			ServerConnection ligacao;
 			try {
-				ligacao = ServerConnection.ligar(args[0], Integer.parseInt(args[1]), area, tipo);
+				ligacao = ServerConnection.ligar(args[0], Integer.parseInt(args[1]), area, tipo, Subscription.NONE);
 			} catch (IOException e) {
 				System.err.println("Não foi possível ligar ao servidor: " + e.getMessage());
 				return;
