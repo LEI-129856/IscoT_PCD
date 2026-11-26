@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.function.Consumer;
 
 /**
  * Ligação de um cliente ao servidor IscoT.
@@ -79,5 +80,28 @@ public class ServerConnection {
         out.reset(); // esquece os objetos já enviados (senão o stream guarda referências a todos)
     }
 
-    // TODO (fase 5, passo 9): método para receber eventos (usa in)
+    /**
+     * Fase 5: arranca uma thread que fica sempre à espera de eventos do servidor
+     * e entrega cada um ao tratador (normalmente o aplicarOrdem do atuador).
+     * O readObject() bloqueia, por isso não pode correr na EDT nem no main.
+     * A thread é daemon: quando a janela fecha e o main acaba, não impede o programa de terminar.
+     */
+    public void iniciarRececao(Consumer<Event> tratador) {
+        Thread rececao = new Thread(() -> {
+            try {
+                while (true) {
+                    Object recebido = in.readObject(); // bloqueia até chegar um evento
+                    if (recebido instanceof Event) {
+                        tratador.accept((Event) recebido);
+                    } else {
+                        System.out.println("Ignorado objeto que não é um Event: " + recebido);
+                    }
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                System.err.println("Ligação ao servidor terminada: " + e.getMessage());
+            }
+        }, "Rececao-" + deviceId);
+        rececao.setDaemon(true);
+        rececao.start();
+    }
 }

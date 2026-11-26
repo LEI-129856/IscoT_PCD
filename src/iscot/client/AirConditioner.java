@@ -77,6 +77,15 @@ public class AirConditioner {
 			ac.setTemperatura(22);*/
 
 			// TODO: receive and handle messages from server
+			// Fase 5: as ordens chegam do servidor. A thread de receção chama o aplicarOrdem
+			// sempre que chega uma ordem deste tipo (o servidor só envia as da nossa subscrição e área).
+			ligacao.iniciarRececao(evento -> {
+				if (evento instanceof AreaTemperatureOrderEvent) {
+					aplicarOrdem(ac, historico, (AreaTemperatureOrderEvent) evento);
+				} else {
+					System.out.println("Ignorado evento inesperado: " + evento);
+				}
+			});
 			
 			// TODO: for first phase: create an appropriate event hardcoded locally and change the GUI accordingly
 			// Fase 3: ordens criadas à mão, a simular as que vão chegar do servidor
