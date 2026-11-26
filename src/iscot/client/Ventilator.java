@@ -86,12 +86,12 @@ public class Ventilator {
 			});
 			
 			// TODO: for first phase: create an appropriate event hardcoded locally and change the GUI accordingly
-			// Fase 3: ordens criadas à mão, a simular as que vão chegar do servidor
+			/* Fase 3: ordens criadas à mão, a simular as que vão chegar do servidor
 			String decisorTeste = "DecisorTeste"; // no sistema final, quem cria as ordens é um decisor
 			Thread.sleep(3000);
 			aplicarOrdem(ventilator, historico, new AreaVentilationOrderEvent(decisorTeste, area, true));
 			Thread.sleep(3000);
-			aplicarOrdem(ventilator, historico, new AreaVentilationOrderEvent(decisorTeste, area, false));
+			aplicarOrdem(ventilator, historico, new AreaVentilationOrderEvent(decisorTeste, area, false));*/
 		}
 	}
 
